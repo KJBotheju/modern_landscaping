@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_literals_to_create_immutables
+
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:modern_landscaping/products/products.dart';
@@ -48,7 +50,18 @@ class _BodyState extends State<Body> {
             ),
             Padding(
               padding: EdgeInsets.all(20),
-              child: Products(),
+              child: Column(
+                children: [
+                  Text(
+                    'Products',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Products(),
+                ],
+              ),
             ),
           ],
         ),

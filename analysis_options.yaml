@@ -9,6 +9,7 @@
 # packages, and plugins designed to encourage good coding practices.
 analyzer:
   errors:
+    avoid_print: ignore
     file_names: ignore
     prefer_const_constructors: ignore
     unused_field: ignore
