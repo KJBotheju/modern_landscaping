@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "963182356846",
+    "project_id": "modernlandscaping-f6d57",
+    "storage_bucket": "modernlandscaping-f6d57.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:963182356846:android:48a0009b1d751b5cc9397f",
+        "android_client_info": {
+          "package_name": "com.example.modern_landscaping"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfdg7JYnDG7YsRuNR1gwa2Fxb6f795d68"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
