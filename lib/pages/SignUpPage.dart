@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:modern_landscaping/pages/HomePage.dart';
-import 'package:modern_landscaping/pages/SignInPage.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({Key? key}) : super(key: key);
@@ -25,6 +24,7 @@ class _SignupPageState extends State<SignupPage> {
 
   bool _isPasswordVisible = false;
   bool _isConfirmPasswordVisible = false;
+  String? _selectedUserType;
 
   Future<void> _signUp() async {
     try {
@@ -32,7 +32,8 @@ class _SignupPageState extends State<SignupPage> {
           _emailController.text.isEmpty ||
           _numberController.text.isEmpty ||
           _passwordController.text.isEmpty ||
-          _confirmPasswordController.text.isEmpty) {
+          _confirmPasswordController.text.isEmpty ||
+          _selectedUserType == null) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Please fill in all fields.'),
@@ -63,7 +64,7 @@ class _SignupPageState extends State<SignupPage> {
         'username': _usernameController.text,
         'email': _emailController.text,
         'number': _numberController.text,
-        'password': _passwordController.text,
+        'userType': _selectedUserType,
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
@@ -93,6 +94,7 @@ class _SignupPageState extends State<SignupPage> {
       appBar: AppBar(
         title: const Text(''),
       ),
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Center(
           child: Column(
@@ -163,13 +165,13 @@ class _SignupPageState extends State<SignupPage> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 child: TextField(
-                  controller: _emailController,
+                  controller: _numberController,
                   style: TextStyle(
                     color: Colors.black,
                   ),
                   decoration: InputDecoration(
                     labelText: "Phone Number",
-                    prefixIcon: Icon(Icons.person_outline),
+                    prefixIcon: Icon(Icons.phone),
                     filled: true,
                     fillColor: Colors.black.withOpacity(0.2),
                     border: OutlineInputBorder(
@@ -182,6 +184,37 @@ class _SignupPageState extends State<SignupPage> {
                       borderSide: BorderSide(
                         color: Colors.grey,
                       ),
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 10),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                child: DropdownButtonFormField<String>(
+                  value: _selectedUserType,
+                  items: [
+                    'Customer',
+                    'Plant Distributor',
+                    'Garden Decoration Item Distributor',
+                    'Landscape Architecture'
+                  ].map((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                  onChanged: (newValue) {
+                    setState(() {
+                      _selectedUserType = newValue;
+                    });
+                  },
+                  decoration: InputDecoration(
+                    labelText: 'User Type',
+                    filled: true,
+                    fillColor: Colors.black.withOpacity(0.2),
+                    border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),

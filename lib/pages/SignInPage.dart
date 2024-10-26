@@ -67,6 +67,7 @@ class SingInPageState extends State<SignInPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+        color: const Color.fromARGB(255, 255, 255, 255),
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         child: SingleChildScrollView(
