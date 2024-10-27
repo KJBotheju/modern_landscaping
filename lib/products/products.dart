@@ -86,7 +86,7 @@ class _ProductsState extends State<Products> {
     final width = MediaQuery.of(context).size.width;
 
     int crossAxisCount;
-    if (width < 400) {
+    if (width < 300) {
       crossAxisCount = 1;
     } else {
       crossAxisCount = 2;
