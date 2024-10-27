@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_final_fields
+
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -30,6 +32,23 @@ class CartProvider with ChangeNotifier {
         'price': productPrice,
         'count': 1,
       };
+    }
+    _saveCartCounts();
+    notifyListeners();
+  }
+
+  void incrementItem(int productId) {
+    if (_cartItems.containsKey(productId)) {
+      _cartItems[productId]!['count']++;
+    }
+    _saveCartCounts();
+    notifyListeners();
+  }
+
+  void decrementItem(int productId) {
+    if (_cartItems.containsKey(productId) &&
+        _cartItems[productId]!['count'] > 1) {
+      _cartItems[productId]!['count']--;
     }
     _saveCartCounts();
     notifyListeners();

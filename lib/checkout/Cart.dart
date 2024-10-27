@@ -1,7 +1,9 @@
+// ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors, sort_child_properties_last
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:modern_landscaping/provider/CartProvider.dart';
-import 'package:modern_landscaping/checkout/CheckoutPage.dart'; // Import the CheckoutPage
+import 'package:modern_landscaping/checkout/CheckoutPage.dart';
 
 class Cart extends StatelessWidget {
   @override
@@ -25,11 +27,10 @@ class Cart extends StatelessWidget {
                   content: Text(
                     'Cart cleared successfully!',
                     style: TextStyle(
-                      color: Colors.green, // Correct way to set text color
+                      color: Colors.white,
                     ),
                   ),
-                  backgroundColor:
-                      Colors.white, // Optional: Customize background
+                  backgroundColor: Colors.green,
                 ),
               );
             },
@@ -39,7 +40,6 @@ class Cart extends StatelessWidget {
       backgroundColor: Colors.grey[100],
       body: Column(
         children: [
-          // Scrollable product list
           Expanded(
             child: cartProvider.distinctProductCount > 0
                 ? ListView.builder(
@@ -55,8 +55,29 @@ class Cart extends StatelessWidget {
 
                       return ListTile(
                         title: Text(productName),
-                        subtitle: Text(
-                            'Price: $productPrice\nQuantity: $productCount'),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Price: $productPrice'),
+                            Row(
+                              children: [
+                                IconButton(
+                                  icon: Icon(Icons.remove),
+                                  onPressed: () {
+                                    cartProvider.decrementItem(productId);
+                                  },
+                                ),
+                                Text('$productCount'),
+                                IconButton(
+                                  icon: Icon(Icons.add),
+                                  onPressed: () {
+                                    cartProvider.incrementItem(productId);
+                                  },
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                         trailing: Text(
                           'Total: Rs ${double.parse(productPrice.replaceAll('Rs ', '')) * productCount}',
                         ),
@@ -65,15 +86,12 @@ class Cart extends StatelessWidget {
                   )
                 : Center(child: Text('Your cart is empty!')),
           ),
-
-          // Conditionally show the checkout button if the cart is not empty
           if (cartProvider.distinctProductCount > 0)
             Container(
               padding: const EdgeInsets.all(16.0),
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  // Navigate to CheckoutPage
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -87,7 +105,7 @@ class Cart extends StatelessWidget {
                 ),
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  backgroundColor: Colors.green, // Button color
+                  backgroundColor: Colors.green,
                 ),
               ),
             ),
