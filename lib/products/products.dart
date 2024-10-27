@@ -4,7 +4,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:modern_landscaping/products/ProductDetailPage.dart';
 import 'package:modern_landscaping/provider/CartProvider.dart';
-import 'package:provider/provider.dart'; // Adjust the import as necessary
+import 'package:provider/provider.dart';
 
 class Products extends StatefulWidget {
   const Products({super.key});
@@ -17,7 +17,7 @@ class _ProductsState extends State<Products> {
   final List<Map<String, String>> _products = [
     {
       'image': 'assets/images/product1.jpg',
-      'name': 'Stainless Steel Bench',
+      'name': 'Steel Bench',
       'price': 'Rs 600',
     },
     {
@@ -35,7 +35,6 @@ class _ProductsState extends State<Products> {
       'name': 'Decorative Plant 3',
       'price': 'Rs 300',
     },
-    // Repeat products as needed...
   ];
 
   int? _selectedProductIndex;
@@ -62,8 +61,7 @@ class _ProductsState extends State<Products> {
 
   void _toggleCart(int index) {
     final cartProvider = Provider.of<CartProvider>(context, listen: false);
-    cartProvider
-        .toggleItemInCart(index); // Toggle item in cart for this specific index
+    cartProvider.toggleItemInCart(index);
 
     setState(() {
       _selectedProductIndex = (_selectedProductIndex == index) ? null : index;
@@ -84,8 +82,7 @@ class _ProductsState extends State<Products> {
       itemBuilder: (context, index) {
         final product = _products[index];
         final cartProvider = Provider.of<CartProvider>(context);
-        final itemCount = cartProvider
-            .getCartCount(index); // Get count for the current product
+        final itemCount = cartProvider.getCartCount(index);
 
         return Card(
           elevation: 4.0,
@@ -121,14 +118,11 @@ class _ProductsState extends State<Products> {
                   top: 40,
                   right: 10,
                   child: GestureDetector(
-                    onTap: () =>
-                        _toggleCart(index), // Update cart count and icon
+                    onTap: () => _toggleCart(index),
                     child: Icon(
                       itemCount > 0
-                          ? Icons
-                              .shopping_cart // Filled cart icon when item is in the cart
-                          : Icons
-                              .shopping_cart_outlined, // Outlined cart icon when item is not in the cart
+                          ? Icons.shopping_cart
+                          : Icons.shopping_cart_outlined,
                       size: 30,
                       color: Colors.black,
                     ),

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:modern_landscaping/firebase_options.dart';
 import 'package:modern_landscaping/pages/SplashScreen.dart';
 import 'package:modern_landscaping/provider/CartProvider.dart';
-import 'package:provider/provider.dart'; // Adjust the import as necessary
+import 'package:provider/provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => CartProvider(), // Provide the CartProvider
+      create: (context) => CartProvider(),
       child: MaterialApp(
         title: 'Modern Landscaping',
         debugShowCheckedModeBanner: false,

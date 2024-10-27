@@ -43,18 +43,15 @@ class _HomePageState extends State<HomePage> {
               return Stack(
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.shopping_cart,
-                        size: 24), // Adjust icon size here
+                    icon: const Icon(Icons.shopping_cart, size: 24),
                     onPressed: () {
-                      // This is where you can navigate to the cart page
                       print('cart click.');
                     },
                   ),
-                  if (cartProvider.cartCount >
-                      0) // Show badge if cart is not empty
+                  if (cartProvider.cartCount > 0)
                     Positioned(
                       right: 6,
-                      top: 5, // Adjust this value for vertical positioning
+                      top: 5,
                       child: Container(
                         padding: const EdgeInsets.all(2),
                         decoration: BoxDecoration(
@@ -63,12 +60,11 @@ class _HomePageState extends State<HomePage> {
                         ),
                         constraints: BoxConstraints(
                           minWidth: 16,
-                          minHeight: 8, // Adjust height for a smaller badge
+                          minHeight: 8,
                         ),
                         child: Center(
-                          // Center the text within the badge
                           child: Text(
-                            '${cartProvider.cartCount}', // Show current cart count
+                            '${cartProvider.cartCount}',
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 12,
