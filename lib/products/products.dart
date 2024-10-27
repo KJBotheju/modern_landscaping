@@ -67,6 +67,20 @@ class _ProductsState extends State<Products> {
     cartProvider.toggleItemInCart(productId, productName, productPrice);
   }
 
+  void _navigateToProductDetail(
+      BuildContext context, Map<String, dynamic> product) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ProductDetailPage(
+          image: product['image'],
+          name: product['name'],
+          price: product['price'],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
@@ -139,14 +153,7 @@ class _ProductsState extends State<Products> {
                 left: 0,
                 right: 0,
                 child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ProductDetailPage(),
-                      ),
-                    );
-                  },
+                  onTap: () => _navigateToProductDetail(context, product),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
