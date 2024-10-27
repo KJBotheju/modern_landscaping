@@ -1,5 +1,3 @@
-// checkout_page.dart
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:modern_landscaping/provider/CartProvider.dart';
@@ -22,14 +20,19 @@ class CheckoutPage extends StatelessWidget {
           ? ListView.builder(
               itemCount: cartProvider.distinctProductCount,
               itemBuilder: (context, index) {
-                final productName = cartProvider.getProductName(index);
-                final productPrice = cartProvider.getProductPrice(index);
-                final productCount = cartProvider.getCartCount(index);
+                // Use the product ID to fetch the correct product details
+                final productId =
+                    cartProvider.filteredCartItems.keys.elementAt(index);
+                final productName = cartProvider.getProductName(productId);
+                final productPrice = cartProvider.getProductPrice(productId);
+                final productCount = cartProvider.getCartCount(productId);
 
                 return Card(
                   margin: EdgeInsets.all(8.0),
                   child: ListTile(
-                    title: Text(productName),
+                    title: Text(
+                      productName.isEmpty ? 'Product not found' : productName,
+                    ),
                     subtitle:
                         Text('Price: $productPrice\nQuantity: $productCount'),
                     trailing: Text(
@@ -44,11 +47,10 @@ class CheckoutPage extends StatelessWidget {
               child: Text('Your cart is empty!'),
             ),
       bottomNavigationBar: Container(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: ElevatedButton(
           onPressed: () {
             // Proceed to payment or confirmation logic
-            // Here, you can implement your payment processing logic
             showDialog(
               context: context,
               builder: (context) => AlertDialog(
@@ -58,7 +60,7 @@ class CheckoutPage extends StatelessWidget {
                   TextButton(
                     child: Text('OK'),
                     onPressed: () {
-                      Navigator.of(context).pop();
+                      Navigator.of(context).pop(); // Close dialog
                       Navigator.of(context).pop(); // Go back to cart page
                     },
                   ),
@@ -68,7 +70,7 @@ class CheckoutPage extends StatelessWidget {
           },
           child: Text('Proceed to Payment'),
           style: ElevatedButton.styleFrom(
-            padding: EdgeInsets.symmetric(vertical: 16.0),
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
             backgroundColor: Colors.green, // Button color
           ),
         ),
