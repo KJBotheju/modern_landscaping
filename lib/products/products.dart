@@ -61,8 +61,10 @@ class _ProductsState extends State<Products> {
 
   void _toggleCart(int index) {
     final cartProvider = Provider.of<CartProvider>(context, listen: false);
-    cartProvider.toggleItemInCart(index);
+    String productName = _products[index]['name']!;
+    String productPrice = _products[index]['price']!;
 
+    cartProvider.toggleItemInCart(index, productName, productPrice);
     setState(() {
       _selectedProductIndex = (_selectedProductIndex == index) ? null : index;
     });

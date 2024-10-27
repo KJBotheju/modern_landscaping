@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:modern_landscaping/checkout/Cart.dart';
 import 'package:modern_landscaping/pages/Body.dart';
 import 'package:modern_landscaping/pages/SignInPage.dart';
 import 'package:modern_landscaping/provider/CartProvider.dart';
@@ -45,13 +46,16 @@ class _HomePageState extends State<HomePage> {
                   IconButton(
                     icon: const Icon(Icons.shopping_cart, size: 24),
                     onPressed: () {
-                      print('cart click.');
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Cart()),
+                      );
                     },
                   ),
                   if (cartProvider.cartCount > 0)
                     Positioned(
-                      right: 6,
-                      top: 5,
+                      right: 4,
+                      top: 4,
                       child: Container(
                         padding: const EdgeInsets.all(2),
                         decoration: BoxDecoration(
