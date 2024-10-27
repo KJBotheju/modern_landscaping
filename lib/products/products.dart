@@ -13,23 +13,27 @@ class Products extends StatefulWidget {
 }
 
 class _ProductsState extends State<Products> {
-  final List<Map<String, String>> _products = [
+  final List<Map<String, dynamic>> _products = [
     {
+      'id': 1,
       'image': 'assets/images/product1.jpg',
       'name': 'Steel Bench',
       'price': 'Rs 600',
     },
     {
+      'id': 2,
       'image': 'assets/images/product2.png',
       'name': 'Decorative Plant',
       'price': 'Rs 500',
     },
     {
+      'id': 3,
       'image': 'assets/images/product3.jpg',
       'name': 'Decorative Plant 2',
       'price': 'Rs 300',
     },
     {
+      'id': 4,
       'image': 'assets/images/product4.jpg',
       'name': 'Decorative Plant 3',
       'price': 'Rs 300',
@@ -58,15 +62,9 @@ class _ProductsState extends State<Products> {
     super.dispose();
   }
 
-  void _toggleCart(int index) {
+  void _toggleCart(int productId, String productName, String productPrice) {
     final cartProvider = Provider.of<CartProvider>(context, listen: false);
-    String productName = _products[index]['name']!;
-    String productPrice = _products[index]['price']!;
-
-    cartProvider.toggleItemInCart(index, productName, productPrice);
-    setState(() {
-      _selectedProductIndex = (_selectedProductIndex == index) ? null : index;
-    });
+    cartProvider.toggleItemInCart(productId, productName, productPrice);
   }
 
   @override
@@ -83,7 +81,7 @@ class _ProductsState extends State<Products> {
       itemBuilder: (context, index) {
         final product = _products[index];
         final cartProvider = Provider.of<CartProvider>(context);
-        final itemCount = cartProvider.getCartCount(index);
+        final itemCount = cartProvider.getCartCount(product['id']);
 
         return Card(
           elevation: 4.0,
@@ -97,7 +95,7 @@ class _ProductsState extends State<Products> {
                 child: GestureDetector(
                   onTap: () => _showIcons(index),
                   child: Image.asset(
-                    product['image']!,
+                    product['image'],
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -121,7 +119,11 @@ class _ProductsState extends State<Products> {
                   top: 40,
                   right: 10,
                   child: GestureDetector(
-                    onTap: () => _toggleCart(index),
+                    onTap: () => _toggleCart(
+                      product['id'],
+                      product['name'],
+                      product['price'],
+                    ),
                     child: Icon(
                       itemCount > 0
                           ? Icons.shopping_cart
@@ -151,7 +153,7 @@ class _ProductsState extends State<Products> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          product['name']!,
+                          product['name'],
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -159,7 +161,7 @@ class _ProductsState extends State<Products> {
                         ),
                         SizedBox(height: 4),
                         Text(
-                          product['price']!,
+                          product['price'],
                           style: TextStyle(
                             fontSize: 14,
                             color: Colors.grey[600],

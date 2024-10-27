@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_final_fields
-
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -10,22 +8,24 @@ class CartProvider with ChangeNotifier {
     _loadCartCounts();
   }
 
-  int getCartCount(int index) => _cartItems[index]?['count'] ?? 0;
+  int getCartCount(int productId) => _cartItems[productId]?['count'] ?? 0;
 
-  String getProductName(int index) =>
-      _cartItems[index]?['name'] ?? 'Unknown Product';
+  String getProductName(int productId) =>
+      _cartItems[productId]?['name'] ?? 'Product not found';
 
-  String getProductPrice(int index) => _cartItems[index]?['price'] ?? '0';
+  String getProductPrice(int productId) =>
+      _cartItems[productId]?['price'] ?? '0';
 
-  void toggleItemInCart(int index, String productName, String productPrice) {
-    if (_cartItems.containsKey(index)) {
-      if (_cartItems[index]!['count'] > 0) {
-        _cartItems[index]!['count']--;
+  void toggleItemInCart(
+      int productId, String productName, String productPrice) {
+    if (_cartItems.containsKey(productId)) {
+      if (_cartItems[productId]!['count'] > 1) {
+        _cartItems[productId]!['count']--;
       } else {
-        _cartItems[index]!['count'] = 1;
+        _cartItems.remove(productId);
       }
     } else {
-      _cartItems[index] = {
+      _cartItems[productId] = {
         'name': productName,
         'price': productPrice,
         'count': 1,
@@ -41,8 +41,12 @@ class CartProvider with ChangeNotifier {
 
   int get distinctProductCount => _cartItems.length;
 
+  Map<int, Map<String, dynamic>> get filteredCartItems => _cartItems;
+
   Future<void> _saveCartCounts() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final prefs = await SharedPreferences.getInstance();
+    prefs.clear();
+
     _cartItems.forEach((key, value) {
       prefs.setInt('cart_count_$key', value['count']);
       prefs.setString('cart_name_$key', value['name']);
@@ -51,12 +55,14 @@ class CartProvider with ChangeNotifier {
   }
 
   Future<void> _loadCartCounts() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final prefs = await SharedPreferences.getInstance();
+    _cartItems.clear();
+
     for (int i = 0; i < 100; i++) {
-      final int? count = prefs.getInt('cart_count_$i');
-      if (count != null) {
-        String? name = prefs.getString('cart_name_$i');
-        String? price = prefs.getString('cart_price_$i');
+      final count = prefs.getInt('cart_count_$i');
+      if (count != null && count > 0) {
+        final name = prefs.getString('cart_name_$i');
+        final price = prefs.getString('cart_price_$i');
         _cartItems[i] = {
           'count': count,
           'name': name,
@@ -64,6 +70,13 @@ class CartProvider with ChangeNotifier {
         };
       }
     }
+    notifyListeners();
+  }
+
+  Future<void> clearCartData() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+    _cartItems.clear();
     notifyListeners();
   }
 }
