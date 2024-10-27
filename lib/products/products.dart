@@ -23,19 +23,19 @@ class _ProductsState extends State<Products> {
     {
       'id': 2,
       'image': 'assets/images/product2.png',
-      'name': 'Decorative Plant',
+      'name': 'Plant 1',
       'price': 'Rs 500',
     },
     {
       'id': 3,
       'image': 'assets/images/product3.jpg',
-      'name': 'Decorative Plant 2',
+      'name': 'Plant 2',
       'price': 'Rs 300',
     },
     {
       'id': 4,
       'image': 'assets/images/product4.jpg',
-      'name': 'Decorative Plant 3',
+      'name': 'Plant 3',
       'price': 'Rs 300',
     },
   ];
@@ -131,6 +131,7 @@ class _ProductsState extends State<Products> {
                   child: GestureDetector(
                     onTap: () {
                       launch('https://buddhii.github.io/AR/');
+                      Navigator.of(context).popUntil((route) => route.isFirst);
                     },
                     child: Icon(
                       Icons.camera_alt,
