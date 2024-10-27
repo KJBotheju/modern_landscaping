@@ -2,11 +2,15 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:modern_landscaping/firebase_options.dart';
 import 'package:modern_landscaping/pages/SplashScreen.dart';
+import 'package:modern_landscaping/provider/CartProvider.dart';
+import 'package:provider/provider.dart'; // Adjust the import as necessary
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  runApp(const MyApp());
+  Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform)
+      .then((_) {
+    runApp(const MyApp());
+  });
 }
 
 class MyApp extends StatelessWidget {
@@ -14,15 +18,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Moden Landscaping',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme:
-            ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 74, 224, 81)),
-        useMaterial3: true,
+    return ChangeNotifierProvider(
+      create: (context) => CartProvider(), // Provide the CartProvider
+      child: MaterialApp(
+        title: 'Modern Landscaping',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(
+              seedColor: const Color.fromARGB(255, 74, 224, 81)),
+          useMaterial3: true,
+        ),
+        home: SplashScreen(),
       ),
-      home: SplashScreen(),
     );
   }
 }

@@ -3,6 +3,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:modern_landscaping/products/ProductDetailPage.dart';
+import 'package:modern_landscaping/provider/CartProvider.dart';
+import 'package:provider/provider.dart'; // Adjust the import as necessary
 
 class Products extends StatefulWidget {
   const Products({super.key});
@@ -33,26 +35,7 @@ class _ProductsState extends State<Products> {
       'name': 'Decorative Plant 3',
       'price': 'Rs 300',
     },
-    {
-      'image': 'assets/images/product1.jpg',
-      'name': 'Stainless Steel Bench',
-      'price': 'Rs 600',
-    },
-    {
-      'image': 'assets/images/product2.png',
-      'name': 'Decorative Plant',
-      'price': 'Rs 500',
-    },
-    {
-      'image': 'assets/images/product3.jpg',
-      'name': 'Decorative Plant 2',
-      'price': 'Rs 300',
-    },
-    {
-      'image': 'assets/images/product4.jpg',
-      'name': 'Decorative Plant 3',
-      'price': 'Rs 300',
-    },
+    // Repeat products as needed...
   ];
 
   int? _selectedProductIndex;
@@ -77,6 +60,16 @@ class _ProductsState extends State<Products> {
     super.dispose();
   }
 
+  void _toggleCart(int index) {
+    final cartProvider = Provider.of<CartProvider>(context, listen: false);
+    cartProvider
+        .toggleItemInCart(index); // Toggle item in cart for this specific index
+
+    setState(() {
+      _selectedProductIndex = (_selectedProductIndex == index) ? null : index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
@@ -90,6 +83,10 @@ class _ProductsState extends State<Products> {
       itemCount: _products.length,
       itemBuilder: (context, index) {
         final product = _products[index];
+        final cartProvider = Provider.of<CartProvider>(context);
+        final itemCount = cartProvider
+            .getCartCount(index); // Get count for the current product
+
         return Card(
           elevation: 4.0,
           shape: RoundedRectangleBorder(
@@ -97,15 +94,13 @@ class _ProductsState extends State<Products> {
           ),
           child: Stack(
             children: [
-              Expanded(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
-                  child: GestureDetector(
-                    onTap: () => _showIcons(index),
-                    child: Image.asset(
-                      product['image']!,
-                      fit: BoxFit.cover,
-                    ),
+              ClipRRect(
+                borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
+                child: GestureDetector(
+                  onTap: () => _showIcons(index),
+                  child: Image.asset(
+                    product['image']!,
+                    fit: BoxFit.cover,
                   ),
                 ),
               ),
@@ -126,9 +121,14 @@ class _ProductsState extends State<Products> {
                   top: 40,
                   right: 10,
                   child: GestureDetector(
-                    onTap: () => print('cart click.'),
+                    onTap: () =>
+                        _toggleCart(index), // Update cart count and icon
                     child: Icon(
-                      Icons.shopping_cart,
+                      itemCount > 0
+                          ? Icons
+                              .shopping_cart // Filled cart icon when item is in the cart
+                          : Icons
+                              .shopping_cart_outlined, // Outlined cart icon when item is not in the cart
                       size: 30,
                       color: Colors.black,
                     ),
@@ -178,7 +178,7 @@ class _ProductsState extends State<Products> {
         );
       },
       shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
     );
   }
 }
