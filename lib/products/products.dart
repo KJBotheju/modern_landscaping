@@ -1,10 +1,9 @@
-// ignore_for_file: avoid_print
-
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:modern_landscaping/products/ProductDetailPage.dart';
 import 'package:modern_landscaping/provider/CartProvider.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Products extends StatefulWidget {
   const Products({super.key});
@@ -108,7 +107,9 @@ class _ProductsState extends State<Products> {
                   top: 10,
                   right: 10,
                   child: GestureDetector(
-                    onTap: () => print('camera click.'),
+                    onTap: () {
+                      launch('https://buddhii.github.io/AR/');
+                    },
                     child: Icon(
                       Icons.camera_alt,
                       size: 30,
