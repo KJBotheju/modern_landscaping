@@ -83,13 +83,22 @@ class _ProductsState extends State<Products> {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+
+    int crossAxisCount;
+    if (width < 400) {
+      crossAxisCount = 1;
+    } else {
+      crossAxisCount = 2;
+    }
+
     return GridView.builder(
       padding: const EdgeInsets.all(16.0),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: crossAxisCount,
         crossAxisSpacing: 20.0,
         mainAxisSpacing: 29.0,
-        childAspectRatio: 0.7,
+        childAspectRatio: 0.65,
       ),
       itemCount: _products.length,
       itemBuilder: (context, index) {
@@ -115,6 +124,7 @@ class _ProductsState extends State<Products> {
                 ),
               ),
               if (_selectedProductIndex == index) ...[
+                // Show icons only for selected product
                 Positioned(
                   top: 10,
                   right: 10,
