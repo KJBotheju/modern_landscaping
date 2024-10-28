@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:modern_landscaping/products/allproducts.dart';
 import 'package:modern_landscaping/products/products.dart';
 
 class Body extends StatefulWidget {
@@ -59,7 +60,7 @@ class _BodyState extends State<Body> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Products(),
+                  ALLProducts(),
                 ],
               ),
             ),

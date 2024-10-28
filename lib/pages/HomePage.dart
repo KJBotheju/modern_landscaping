@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:modern_landscaping/checkout/Cart.dart';
 import 'package:modern_landscaping/pages/Body.dart';
 import 'package:modern_landscaping/pages/Category.dart';
+import 'package:modern_landscaping/pages/CategorySelectionPage.dart';
 import 'package:modern_landscaping/pages/Location.dart';
 import 'package:modern_landscaping/pages/SignInPage.dart';
 import 'package:modern_landscaping/provider/CartProvider.dart';
@@ -106,22 +107,23 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             ListTile(
-              leading: Icon(Icons.person, color: Colors.blue),
+              leading: Icon(Icons.category, color: Colors.blue),
               title: Text(
-                'Profile',
+                'Categories',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Category()),
+                  MaterialPageRoute(
+                      builder: (context) => CategorySelectionPage()),
                 );
               },
             ),
             ListTile(
-              leading: Icon(Icons.settings, color: Colors.blue),
+              leading: Icon(Icons.location_city, color: Colors.blue),
               title: Text(
-                'Settings',
+                'Locations',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               onTap: () {

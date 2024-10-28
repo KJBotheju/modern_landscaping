@@ -6,7 +6,9 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Products extends StatefulWidget {
-  const Products({super.key});
+  final String? category; // Accept category parameter
+
+  const Products({super.key, this.category});
 
   @override
   State<Products> createState() => _ProductsState();
@@ -27,24 +29,24 @@ class _ProductsState extends State<Products> {
       'image': 'assets/images/product2.png',
       'name': 'Plant 1',
       'price': 'Rs 500',
-      'category': 'tree',
-      'location': 'colombo',
+      'category': 'Tree',
+      'location': 'Colombo',
     },
     {
       'id': 3,
       'image': 'assets/images/product3.jpg',
       'name': 'Plant 2',
       'price': 'Rs 300',
-      'category': 'Plants', // New field for category
-      'location': 'matara', // New field for location
+      'category': 'Plants',
+      'location': 'Matara',
     },
     {
       'id': 4,
       'image': 'assets/images/product4.jpg',
       'name': 'Plant 3',
       'price': 'Rs 300',
-      'category': 'Plants', // New field for category
-      'location': 'matara', // New field for location
+      'category': 'Plants',
+      'location': 'Matara',
     },
   ];
 
@@ -93,117 +95,125 @@ class _ProductsState extends State<Products> {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
 
-    int crossAxisCount;
-    if (width < 300) {
-      crossAxisCount = 1;
-    } else {
-      crossAxisCount = 2;
-    }
+    int crossAxisCount = width < 300 ? 1 : 2;
 
-    return GridView.builder(
-      padding: const EdgeInsets.all(16.0),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: crossAxisCount,
-        crossAxisSpacing: 20.0,
-        mainAxisSpacing: 29.0,
-        childAspectRatio: 0.65,
+    // Filter products based on the selected category
+    final filteredProducts = widget.category == null
+        ? _products
+        : _products
+            .where((product) => product['category'] == widget.category)
+            .toList();
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+            '${widget.category} Products'), // Displays the category name in the title
       ),
-      itemCount: _products.length,
-      itemBuilder: (context, index) {
-        final product = _products[index];
-        final cartProvider = Provider.of<CartProvider>(context);
-        final itemCount = cartProvider.getCartCount(product['id']);
+      body: GridView.builder(
+        padding: const EdgeInsets.all(16.0),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: crossAxisCount,
+          crossAxisSpacing: 20.0,
+          mainAxisSpacing: 29.0,
+          childAspectRatio: 0.65,
+        ),
+        itemCount: filteredProducts.length,
+        itemBuilder: (context, index) {
+          final product = filteredProducts[index];
+          final cartProvider = Provider.of<CartProvider>(context);
+          final itemCount = cartProvider.getCartCount(product['id']);
 
-        return Card(
-          elevation: 4.0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Stack(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
-                child: GestureDetector(
-                  onTap: () => _showIcons(index),
-                  child: Image.asset(
-                    product['image'],
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-              if (_selectedProductIndex == index) ...[
-                // Show icons only for selected product
-                Positioned(
-                  top: 10,
-                  right: 10,
+          return Card(
+            elevation: 4.0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Stack(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
                   child: GestureDetector(
-                    onTap: () {
-                      launch('https://buddhii.github.io/AR/');
-                      Navigator.of(context).popUntil((route) => route.isFirst);
-                    },
-                    child: Icon(
-                      Icons.camera_alt,
-                      size: 30,
-                      color: Colors.black,
+                    onTap: () => _showIcons(index),
+                    child: Image.asset(
+                      product['image'],
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
-                Positioned(
-                  top: 40,
-                  right: 10,
-                  child: GestureDetector(
-                    onTap: () => _toggleCart(
-                      product['id'],
-                      product['name'],
-                      product['price'],
+                if (_selectedProductIndex == index) ...[
+                  Positioned(
+                    top: 10,
+                    right: 10,
+                    child: GestureDetector(
+                      onTap: () {
+                        launch('https://buddhii.github.io/AR/');
+                        Navigator.of(context)
+                            .popUntil((route) => route.isFirst);
+                      },
+                      child: Icon(
+                        Icons.camera_alt,
+                        size: 30,
+                        color: Colors.black,
+                      ),
                     ),
-                    child: Icon(
-                      itemCount > 0
-                          ? Icons.shopping_cart
-                          : Icons.shopping_cart_outlined,
-                      size: 30,
-                      color: Colors.black,
+                  ),
+                  Positioned(
+                    top: 40,
+                    right: 10,
+                    child: GestureDetector(
+                      onTap: () => _toggleCart(
+                        product['id'],
+                        product['name'],
+                        product['price'],
+                      ),
+                      child: Icon(
+                        itemCount > 0
+                            ? Icons.shopping_cart
+                            : Icons.shopping_cart_outlined,
+                        size: 30,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                ],
+                Positioned(
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  child: GestureDetector(
+                    onTap: () => _navigateToProductDetail(context, product),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            product['name'],
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(height: 4),
+                          Text(
+                            product['price'],
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ],
-              Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: GestureDetector(
-                  onTap: () => _navigateToProductDetail(context, product),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          product['name'],
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(height: 4),
-                        Text(
-                          product['price'],
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
+            ),
+          );
+        },
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+      ),
     );
   }
 }
