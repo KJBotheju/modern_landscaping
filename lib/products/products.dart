@@ -7,8 +7,9 @@ import 'package:url_launcher/url_launcher.dart';
 
 class Products extends StatefulWidget {
   final String? category; // Accept category parameter
+  final String? location; // Accept location parameter
 
-  const Products({super.key, this.category});
+  const Products({super.key, this.category, this.location});
 
   @override
   State<Products> createState() => _ProductsState();
@@ -21,8 +22,8 @@ class _ProductsState extends State<Products> {
       'image': 'assets/images/product1.jpg',
       'name': 'Steel Bench',
       'price': 'Rs 600',
-      'category': 'Furniture', // New field for category
-      'location': 'Garden', // New field for location
+      'category': 'Furniture',
+      'location': 'Garden',
     },
     {
       'id': 2,
@@ -97,17 +98,19 @@ class _ProductsState extends State<Products> {
 
     int crossAxisCount = width < 300 ? 1 : 2;
 
-    // Filter products based on the selected category
-    final filteredProducts = widget.category == null
-        ? _products
-        : _products
-            .where((product) => product['category'] == widget.category)
-            .toList();
+    // Filter products based on the selected category and location
+    final filteredProducts = _products.where((product) {
+      final matchesCategory =
+          widget.category == null || product['category'] == widget.category;
+      final matchesLocation =
+          widget.location == null || product['location'] == widget.location;
+      return matchesCategory && matchesLocation;
+    }).toList();
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
-            '${widget.category} Products'), // Displays the category name in the title
+            '${widget.category ?? 'All'} Products in ${widget.location ?? 'All Locations'}'), // Displays the category and location names in the title
       ),
       body: GridView.builder(
         padding: const EdgeInsets.all(16.0),
