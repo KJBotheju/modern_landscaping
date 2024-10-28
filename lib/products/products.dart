@@ -19,24 +19,32 @@ class _ProductsState extends State<Products> {
       'image': 'assets/images/product1.jpg',
       'name': 'Steel Bench',
       'price': 'Rs 600',
+      'category': 'Furniture', // New field for category
+      'location': 'Garden', // New field for location
     },
     {
       'id': 2,
       'image': 'assets/images/product2.png',
       'name': 'Plant 1',
       'price': 'Rs 500',
+      'category': 'tree',
+      'location': 'colombo',
     },
     {
       'id': 3,
       'image': 'assets/images/product3.jpg',
       'name': 'Plant 2',
       'price': 'Rs 300',
+      'category': 'Plants', // New field for category
+      'location': 'matara', // New field for location
     },
     {
       'id': 4,
       'image': 'assets/images/product4.jpg',
       'name': 'Plant 3',
       'price': 'Rs 300',
+      'category': 'Plants', // New field for category
+      'location': 'matara', // New field for location
     },
   ];
 
