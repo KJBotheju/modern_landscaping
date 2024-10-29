@@ -1,3 +1,5 @@
+// ignore_for_file: use_super_parameters
+
 import 'package:flutter/material.dart';
 import 'package:modern_landscaping/products/products.dart';
 
@@ -8,7 +10,6 @@ class CategorySelectionPage extends StatelessWidget {
     'Furniture',
     'Plants',
     'Tree',
-    // Add more categories as needed
   ];
 
   @override
@@ -37,7 +38,6 @@ class CategorySelectionPage extends StatelessWidget {
           itemBuilder: (context, index) {
             return GestureDetector(
               onTap: () {
-                // Navigate to Products page with the selected category
                 Navigator.push(
                   context,
                   MaterialPageRoute(

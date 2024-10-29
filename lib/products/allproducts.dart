@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:modern_landscaping/products/ProductDetailPage.dart';
@@ -19,7 +21,7 @@ class _ALLProductsState extends State<ALLProducts> {
       'image': 'assets/images/product1.jpg',
       'name': 'Steel Bench',
       'price': 'Rs 600',
-      'category': 'Furniture', // New field for category
+      'category': 'Furniture',
       'launchUrl': 'https://buddhii.github.io/AR/',
     },
     {
@@ -35,7 +37,7 @@ class _ALLProductsState extends State<ALLProducts> {
       'image': 'assets/images/product3.jpg',
       'name': 'Plant 2',
       'price': 'Rs 300',
-      'category': 'Plants', // New field for category
+      'category': 'Plants',
       'launchUrl': 'https://buddhii.github.io/AR/',
     },
     {
@@ -43,7 +45,7 @@ class _ALLProductsState extends State<ALLProducts> {
       'image': 'assets/images/product4.jpg',
       'name': 'Plant 3',
       'price': 'Rs 300',
-      'category': 'Plants', // New field for category
+      'category': 'Plants',
       'launchUrl': 'https://buddhii.github.io/AR/',
     },
   ];
@@ -136,7 +138,6 @@ class _ALLProductsState extends State<ALLProducts> {
                 ),
               ),
               if (_selectedProductIndex == index) ...[
-                // Show icons only for selected product
                 Positioned(
                   top: 10,
                   right: 10,

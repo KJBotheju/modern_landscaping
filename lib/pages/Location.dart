@@ -99,7 +99,7 @@ class _LocationState extends State<Location> {
           gradient: LinearGradient(
             colors: [
               Color.fromARGB(255, 215, 211, 211),
-              Color.fromARGB(255, 242, 249, 238)
+              Color.fromARGB(255, 242, 249, 238),
             ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -135,34 +135,35 @@ class _LocationState extends State<Location> {
                     ),
                     const SizedBox(height: 20),
                     if (_showLocations && _filteredLocations.isNotEmpty)
-                      ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: _filteredLocations.length,
-                        itemBuilder: (context, index) {
-                          final location = _filteredLocations[index];
-                          return Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            elevation: 8,
-                            margin: const EdgeInsets.symmetric(vertical: 8.0),
-                            child: ListTile(
-                              title: Text(
-                                location,
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w600,
+                      SizedBox(
+                        height: 200,
+                        child: ListView.builder(
+                          itemCount: _filteredLocations.length,
+                          itemBuilder: (context, index) {
+                            final location = _filteredLocations[index];
+                            return Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              elevation: 8,
+                              margin: const EdgeInsets.symmetric(vertical: 8.0),
+                              child: ListTile(
+                                title: Text(
+                                  location,
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
+                                trailing: const Icon(
+                                  Icons.location_on,
+                                  color: Colors.green,
+                                ),
+                                onTap: () => _selectLocation(location),
                               ),
-                              trailing: const Icon(
-                                Icons.location_on,
-                                color: Colors.green,
-                              ),
-                              onTap: () => _selectLocation(location),
-                            ),
-                          );
-                        },
+                            );
+                          },
+                        ),
                       )
                     else if (_showLocations && _filteredLocations.isEmpty)
                       const Text(
@@ -175,7 +176,7 @@ class _LocationState extends State<Location> {
                     const SizedBox(height: 20),
                     if (_userDetails.isNotEmpty) ...[
                       Text(
-                        '$_selectedLocation',
+                        _selectedLocation ?? '',
                         style: const TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.bold,

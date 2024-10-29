@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, sort_child_properties_last
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:modern_landscaping/provider/CartProvider.dart';
@@ -20,7 +22,6 @@ class CheckoutPage extends StatelessWidget {
           ? ListView.builder(
               itemCount: cartProvider.distinctProductCount,
               itemBuilder: (context, index) {
-                // Use the product ID to fetch the correct product details
                 final productId =
                     cartProvider.filteredCartItems.keys.elementAt(index);
                 final productName = cartProvider.getProductName(productId);
@@ -50,7 +51,6 @@ class CheckoutPage extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: ElevatedButton(
           onPressed: () {
-            // Proceed to payment or confirmation logic
             showDialog(
               context: context,
               builder: (context) => AlertDialog(
@@ -60,8 +60,8 @@ class CheckoutPage extends StatelessWidget {
                   TextButton(
                     child: Text('OK'),
                     onPressed: () {
-                      Navigator.of(context).pop(); // Close dialog
-                      Navigator.of(context).pop(); // Go back to cart page
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pop();
                     },
                   ),
                 ],
@@ -71,7 +71,7 @@ class CheckoutPage extends StatelessWidget {
           child: Text('Proceed to Payment'),
           style: ElevatedButton.styleFrom(
             padding: const EdgeInsets.symmetric(vertical: 16.0),
-            backgroundColor: Colors.green, // Button color
+            backgroundColor: Colors.green,
           ),
         ),
       ),

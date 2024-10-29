@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:modern_landscaping/checkout/Cart.dart';
 import 'package:modern_landscaping/pages/Body.dart';
-import 'package:modern_landscaping/pages/Category.dart';
 import 'package:modern_landscaping/pages/CategorySelectionPage.dart';
 import 'package:modern_landscaping/pages/Location.dart';
 import 'package:modern_landscaping/pages/SignInPage.dart';
