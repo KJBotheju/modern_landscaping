@@ -110,8 +110,15 @@ class _ProductsState extends State<Products> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('${widget.category ?? 'All'} Products'),
+        backgroundColor: Colors.white,
+        title: Text(
+          '${widget.category ?? 'All'}',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
+      backgroundColor: Colors.grey[100],
       body: GridView.builder(
         padding: const EdgeInsets.all(16.0),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
