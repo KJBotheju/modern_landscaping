@@ -41,8 +41,7 @@ class _LocationState extends State<Location> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) =>
-            Products(location: location), // Pass selected location
+        builder: (context) => Products(), // Pass selected location
       ),
     );
   }

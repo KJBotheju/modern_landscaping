@@ -25,6 +25,7 @@ class _SignupPageState extends State<SignupPage> {
   bool _isPasswordVisible = false;
   bool _isConfirmPasswordVisible = false;
   String? _selectedUserType;
+  String? _selectedLocation;
 
   Future<void> _signUp() async {
     try {
@@ -33,7 +34,8 @@ class _SignupPageState extends State<SignupPage> {
           _numberController.text.isEmpty ||
           _passwordController.text.isEmpty ||
           _confirmPasswordController.text.isEmpty ||
-          _selectedUserType == null) {
+          _selectedUserType == null ||
+          _selectedLocation == null) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Please fill in all fields.'),
@@ -65,6 +67,7 @@ class _SignupPageState extends State<SignupPage> {
         'email': _emailController.text,
         'number': _numberController.text,
         'userType': _selectedUserType,
+        'location': _selectedLocation,
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
@@ -212,6 +215,37 @@ class _SignupPageState extends State<SignupPage> {
                   },
                   decoration: InputDecoration(
                     labelText: 'User Type',
+                    filled: true,
+                    fillColor: Colors.black.withOpacity(0.2),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 10),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                child: DropdownButtonFormField<String>(
+                  value: _selectedLocation,
+                  items: [
+                    'Colombo',
+                    'Kandy',
+                    'Galle',
+                    'Matara',
+                  ].map((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                  onChanged: (newValue) {
+                    setState(() {
+                      _selectedLocation = newValue;
+                    });
+                  },
+                  decoration: InputDecoration(
+                    labelText: 'Location',
                     filled: true,
                     fillColor: Colors.black.withOpacity(0.2),
                     border: OutlineInputBorder(

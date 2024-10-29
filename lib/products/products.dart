@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:modern_landscaping/products/ProductDetailPage.dart';
@@ -6,10 +8,9 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Products extends StatefulWidget {
-  final String? category; // Accept category parameter
-  final String? location; // Accept location parameter
+  final String? category;
 
-  const Products({super.key, this.category, this.location});
+  const Products({super.key, this.category});
 
   @override
   State<Products> createState() => _ProductsState();
@@ -23,7 +24,7 @@ class _ProductsState extends State<Products> {
       'name': 'Steel Bench',
       'price': 'Rs 600',
       'category': 'Furniture',
-      'location': 'Garden',
+      'launchUrl': 'https://buddhii.github.io/AR/',
     },
     {
       'id': 2,
@@ -31,7 +32,7 @@ class _ProductsState extends State<Products> {
       'name': 'Plant 1',
       'price': 'Rs 500',
       'category': 'Tree',
-      'location': 'Colombo',
+      'launchUrl': 'https://buddhii.github.io/AR/',
     },
     {
       'id': 3,
@@ -39,7 +40,7 @@ class _ProductsState extends State<Products> {
       'name': 'Plant 2',
       'price': 'Rs 300',
       'category': 'Plants',
-      'location': 'Matara',
+      'launchUrl': 'https://buddhii.github.io/AR/',
     },
     {
       'id': 4,
@@ -47,7 +48,7 @@ class _ProductsState extends State<Products> {
       'name': 'Plant 3',
       'price': 'Rs 300',
       'category': 'Plants',
-      'location': 'Matara',
+      'launchUrl': 'https://buddhii.github.io/AR/',
     },
   ];
 
@@ -92,25 +93,24 @@ class _ProductsState extends State<Products> {
     );
   }
 
+  Future<void> _launchUrl(String url) async {
+    await launch(url);
+  }
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-
     int crossAxisCount = width < 300 ? 1 : 2;
 
-    // Filter products based on the selected category and location
     final filteredProducts = _products.where((product) {
       final matchesCategory =
           widget.category == null || product['category'] == widget.category;
-      final matchesLocation =
-          widget.location == null || product['location'] == widget.location;
-      return matchesCategory && matchesLocation;
+      return matchesCategory;
     }).toList();
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-            '${widget.category ?? 'All'} Products in ${widget.location ?? 'All Locations'}'), // Displays the category and location names in the title
+        title: Text('${widget.category ?? 'All'} Products'),
       ),
       body: GridView.builder(
         padding: const EdgeInsets.all(16.0),
@@ -148,10 +148,17 @@ class _ProductsState extends State<Products> {
                     top: 10,
                     right: 10,
                     child: GestureDetector(
-                      onTap: () {
-                        launch('https://buddhii.github.io/AR/');
-                        Navigator.of(context)
-                            .popUntil((route) => route.isFirst);
+                      onTap: () async {
+                        try {
+                          await _launchUrl(product['launchUrl']);
+                        } catch (e) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Could not open the link.'),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+                        }
                       },
                       child: Icon(
                         Icons.camera_alt,

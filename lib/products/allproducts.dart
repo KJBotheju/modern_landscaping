@@ -20,7 +20,7 @@ class _ALLProductsState extends State<ALLProducts> {
       'name': 'Steel Bench',
       'price': 'Rs 600',
       'category': 'Furniture', // New field for category
-      'location': 'Garden', // New field for location
+      'launchUrl': 'https://buddhii.github.io/AR/',
     },
     {
       'id': 2,
@@ -28,7 +28,7 @@ class _ALLProductsState extends State<ALLProducts> {
       'name': 'Plant 1',
       'price': 'Rs 500',
       'category': 'tree',
-      'location': 'colombo',
+      'launchUrl': 'https://buddhii.github.io/AR/',
     },
     {
       'id': 3,
@@ -36,7 +36,7 @@ class _ALLProductsState extends State<ALLProducts> {
       'name': 'Plant 2',
       'price': 'Rs 300',
       'category': 'Plants', // New field for category
-      'location': 'matara', // New field for location
+      'launchUrl': 'https://buddhii.github.io/AR/',
     },
     {
       'id': 4,
@@ -44,7 +44,7 @@ class _ALLProductsState extends State<ALLProducts> {
       'name': 'Plant 3',
       'price': 'Rs 300',
       'category': 'Plants', // New field for category
-      'location': 'matara', // New field for location
+      'launchUrl': 'https://buddhii.github.io/AR/',
     },
   ];
 
@@ -73,6 +73,10 @@ class _ALLProductsState extends State<ALLProducts> {
   void _toggleCart(int productId, String productName, String productPrice) {
     final cartProvider = Provider.of<CartProvider>(context, listen: false);
     cartProvider.toggleItemInCart(productId, productName, productPrice);
+  }
+
+  Future<void> _launchUrl(String url) async {
+    await launch(url);
   }
 
   void _navigateToProductDetail(
@@ -137,9 +141,17 @@ class _ALLProductsState extends State<ALLProducts> {
                   top: 10,
                   right: 10,
                   child: GestureDetector(
-                    onTap: () {
-                      launch('https://buddhii.github.io/AR/');
-                      Navigator.of(context).popUntil((route) => route.isFirst);
+                    onTap: () async {
+                      try {
+                        await _launchUrl(product['launchUrl']);
+                      } catch (e) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Could not open the link.'),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      }
                     },
                     child: Icon(
                       Icons.camera_alt,
